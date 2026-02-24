@@ -1,0 +1,11 @@
+<form
+  class="d-flex flex-column gap-2"
+  hx-post="/teacher/grade/{{ submission.id }}"
+  hx-target="#grade-result-{{ submission.id }}"
+  hx-swap="innerHTML">
+  {% csrf_token %}
+  <input type="number" class="form-control form-control-sm" name="value" min="0" max="100" value="{{ submission.grade.value|default:'' }}" placeholder="Оценка">
+  <input type="text" class="form-control form-control-sm" name="comment" value="{{ submission.grade.comment|default:'' }}" placeholder="Комментарий">
+  <button class="btn btn-sm btn-success">Сохранить</button>
+</form>
+<div id="grade-result-{{ submission.id }}" class="small text-muted mt-1"></div>

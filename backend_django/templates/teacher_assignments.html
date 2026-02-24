@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Задания преподавателя</h1>
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <label for="course-filter" class="form-label">Фильтр по курсу</label>
+    <select
+      id="course-filter"
+      class="form-select"
+      name="course"
+      hx-get="/teacher/assignments"
+      hx-target="#teacher-assignment-list"
+      hx-trigger="change">
+      <option value="">Все курсы</option>
+      {% for course in courses %}
+        <option value="{{ course.id }}" {% if selected_course|stringformat:"s" == course.id|stringformat:"s" %}selected{% endif %}>{{ course.title }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+<div id="teacher-assignment-list">
+  {% include "partials/teacher_assignments_list.html" %}
+</div>
+{% endblock %}

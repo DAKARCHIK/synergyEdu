@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Объявления</h1>
+<div class="row g-3">
+  {% for item in announcements %}
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6">{{ item.title }}</h2>
+          <p class="mb-1"><strong>Группа:</strong> {{ item.group.name }}</p>
+          <p class="mb-1"><strong>Автор:</strong> {{ item.author.username }}</p>
+          <p>{{ item.body }}</p>
+          <small class="text-muted">{{ item.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12"><div class="alert alert-secondary mb-0">Пока нет объявлений.</div></div>
+  {% endfor %}
+</div>
+{% endblock %}

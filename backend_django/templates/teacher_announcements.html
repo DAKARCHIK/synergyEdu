@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Объявления преподавателя</h1>
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h6">Новое объявление</h2>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-2">
+            <select class="form-select" name="group" required>
+              <option value="">Выберите группу</option>
+              {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-2">
+            <input class="form-control" name="title" placeholder="Заголовок" required>
+          </div>
+          <div class="mb-2">
+            <textarea class="form-control" name="body" rows="4" placeholder="Текст объявления" required></textarea>
+          </div>
+          <button class="btn btn-primary">Опубликовать</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h6">Мои объявления</h2>
+        {% for item in announcements %}
+          <div class="border rounded p-2 mb-2">
+            <div class="fw-semibold">{{ item.title }}</div>
+            <div class="small text-muted">{{ item.group.name }} • {{ item.created_at|date:"d.m.Y H:i" }}</div>
+            <div>{{ item.body }}</div>
+          </div>
+        {% empty %}
+          <div class="text-muted">Объявлений пока нет.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

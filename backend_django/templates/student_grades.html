@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Мои оценки</h1>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>Курс</th>
+          <th>Задание</th>
+          <th>Оценка</th>
+          <th>Комментарий</th>
+          <th>Проверил</th>
+          <th>Дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for grade in grades %}
+          <tr>
+            <td>{{ grade.submission.assignment.course.title }}</td>
+            <td>{{ grade.submission.assignment.title }}</td>
+            <td><span class="badge text-bg-success">{{ grade.value }}</span></td>
+            <td>{{ grade.comment|default:"-" }}</td>
+            <td>{{ grade.graded_by.username }}</td>
+            <td>{{ grade.graded_at|date:"d.m.Y H:i" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="text-center text-muted py-4">Оценок пока нет</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

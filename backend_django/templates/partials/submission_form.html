@@ -1,0 +1,13 @@
+<form
+  hx-post="/student/assignments/{{ assignment.id }}/submit"
+  hx-target="#submission-result-{{ assignment.id }}"
+  hx-swap="innerHTML">
+  {% csrf_token %}
+  <div class="mb-2">
+    <textarea class="form-control" name="text" rows="3" placeholder="Текст решения"></textarea>
+  </div>
+  <div class="mb-2">
+    <input type="url" class="form-control" name="link" placeholder="Ссылка на работу">
+  </div>
+  <button class="btn btn-primary btn-sm">Отправить</button>
+</form>

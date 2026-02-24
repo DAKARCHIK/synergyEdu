@@ -1,0 +1,18 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Submitted</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for submission in submissions %}
+      <tr>
+        <td>{{ submission.student.username }}</td>
+        <td>{{ submission.submitted_at|date:"d.m.Y H:i" }}</td>
+        <td>{{ submission.grade.value|default:"-" }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
