@@ -1,9 +1,124 @@
 {% extends "base.html" %}
+{% block title %}Главная | SynergyEdu{% endblock %}
 {% block content %}
-<div class="card shadow-sm">
-  <div class="card-body">
-    <h1 class="h4">Dashboard</h1>
-    <p class="mb-0">У пользователя не найдена роль. Назначьте группу ADMIN/TEACHER/STUDENT через Django Admin.</p>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-1">Dashboard</h1>
+    <p class="text-muted mb-0">Сводка на сегодня</p>
   </div>
 </div>
+
+{% if role %}
+  <div class="row g-3">
+    <div class="col-12 col-xl-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h2 class="h6 mb-3"><i class="bi bi-calendar2-day me-2"></i>Сегодня занятия</h2>
+          {% if today_lessons %}
+            <div class="list-group list-group-flush">
+              {% for lesson in today_lessons %}
+                <div class="list-group-item px-0">
+                  <div class="fw-semibold">{{ lesson.course.title }}</div>
+                  <div class="small text-muted">
+                    {{ lesson.start_time }} - {{ lesson.end_time }} | {{ lesson.group.name }} | {{ lesson.room }}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">На сегодня занятий не найдено.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h2 class="h6 mb-3"><i class="bi bi-clock-history me-2"></i>Ближайшие дедлайны</h2>
+          {% if upcoming_assignments %}
+            <div class="list-group list-group-flush">
+              {% for assignment in upcoming_assignments %}
+                <div class="list-group-item px-0">
+                  <div class="fw-semibold">{{ assignment.title }}</div>
+                  <div class="small text-muted">{{ assignment.course.title }} | {{ assignment.due_date|date:"d.m.Y H:i" }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">Ближайших дедлайнов нет.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h2 class="h6 mb-3"><i class="bi bi-megaphone me-2"></i>Новые объявления</h2>
+          {% if latest_announcements %}
+            <div class="list-group list-group-flush">
+              {% for item in latest_announcements %}
+                <div class="list-group-item px-0">
+                  <div class="fw-semibold">{{ item.title }}</div>
+                  <div class="small text-muted">{{ item.group.name }} | {{ item.created_at|date:"d.m.Y H:i" }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted mb-0">Новых объявлений пока нет.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <h2 class="h6 mb-3"><i class="bi bi-lightning-charge me-2"></i>Быстрые действия</h2>
+          <div class="d-grid gap-2 mb-3">
+            {% for action in quick_actions %}
+              <a href="{{ action.url }}" class="btn btn-outline-primary text-start">
+                <i class="bi {{ action.icon }} me-2"></i>{{ action.label }}
+              </a>
+            {% empty %}
+              <p class="text-muted mb-0">Действия недоступны.</p>
+            {% endfor %}
+          </div>
+
+          {% if role == "ADMIN" and stats %}
+            <div class="row g-2">
+              <div class="col-4">
+                <div class="rounded-3 bg-light border p-2 text-center">
+                  <div class="small text-muted">Группы</div>
+                  <div class="h5 mb-0">{{ stats.groups_count }}</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="rounded-3 bg-light border p-2 text-center">
+                  <div class="small text-muted">Курсы</div>
+                  <div class="h5 mb-0">{{ stats.courses_count }}</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="rounded-3 bg-light border p-2 text-center">
+                  <div class="small text-muted">Пользователи</div>
+                  <div class="h5 mb-0">{{ stats.users_count }}</div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <p class="mb-0">
+        Для пользователя не назначена роль. Назначьте группу `ADMIN`, `TEACHER` или `STUDENT` в Django Admin.
+      </p>
+    </div>
+  </div>
+{% endif %}
 {% endblock %}
