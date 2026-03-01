@@ -15,15 +15,22 @@ class Lesson(models.Model):
         (6, "Воскресенье"),
     ]
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="lessons")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="lessons")
-    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="lessons")
-    weekday = models.IntegerField(choices=WEEKDAYS)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-    room = models.CharField(max_length=120)
+    group = models.ForeignKey(Group, verbose_name="Группа", on_delete=models.CASCADE, related_name="lessons")
+    course = models.ForeignKey(Course, verbose_name="Дисциплина", on_delete=models.CASCADE, related_name="lessons")
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Преподаватель",
+        on_delete=models.CASCADE,
+        related_name="lessons",
+    )
+    weekday = models.IntegerField("День недели", choices=WEEKDAYS)
+    start_time = models.TimeField("Время начала")
+    end_time = models.TimeField("Время окончания")
+    room = models.CharField("Аудитория", max_length=120)
 
     class Meta:
+        verbose_name = "Занятие"
+        verbose_name_plural = "Занятия"
         ordering = ["weekday", "start_time"]
 
     def __str__(self) -> str:

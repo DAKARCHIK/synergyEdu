@@ -19,10 +19,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_htmx",
     "accounts",
-    "education",
-    "schedule",
-    "assignments",
-    "announcements",
+    "education.apps.EducationConfig",
+    "schedule.apps.ScheduleConfig",
+    "assignments.apps.AssignmentsConfig",
+    "announcements.apps.AnnouncementsConfig",
 ]
 
 MIDDLEWARE = [
