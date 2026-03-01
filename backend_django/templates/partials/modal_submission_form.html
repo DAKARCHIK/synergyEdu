@@ -1,0 +1,45 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">{% if submission %}Изменить сдачу{% else %}Сдать задание{% endif %}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form
+      hx-post="/student/submission/save/{{ assignment.id }}/"
+      hx-target="#assignment-{{ assignment.id }}"
+      hx-swap="outerHTML">
+      <div class="modal-body">
+        <p class="mb-2"><strong>{{ assignment.title }}</strong></p>
+        <p class="text-muted small">Срок: {{ assignment.due_date|date:"d.m.Y H:i" }}</p>
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2">
+            {% for error in form.non_field_errors %}
+              <div>{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label">Текст решения</label>
+          <textarea class="form-control {% if form.text.errors %}is-invalid{% endif %}" name="text" rows="4" placeholder="Опишите решение">{{ form.text.value|default:"" }}</textarea>
+          {% for error in form.text.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <div class="mb-1">
+          <label class="form-label">Ссылка</label>
+          <input type="url" class="form-control {% if form.link.errors %}is-invalid{% endif %}" name="link" value="{{ form.link.value|default:"" }}" placeholder="https://...">
+          {% for error in form.link.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        {% csrf_token %}
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>

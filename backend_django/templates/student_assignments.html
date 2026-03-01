@@ -1,35 +1,9 @@
 {% extends "base.html" %}
-{% load assignment_extras %}
 {% block content %}
 <h1 class="h4 mb-3">Мои задания</h1>
 <div class="row g-3">
-  {% for assignment in assignments %}
-    <div class="col-lg-6">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h2 class="h6">{{ assignment.title }}</h2>
-          <p class="mb-1"><strong>Курс:</strong> {{ assignment.course.title }}</p>
-          <p class="mb-1"><strong>Срок:</strong> {{ assignment.due_date|date:"d.m.Y H:i" }}</p>
-          <p class="text-muted">{{ assignment.description }}</p>
-          {% with current=submissions_map|get_item:assignment.id %}
-            <form
-              hx-post="/student/assignments/{{ assignment.id }}/submit"
-              hx-target="#submission-result-{{ assignment.id }}"
-              hx-swap="innerHTML">
-              {% csrf_token %}
-              <div class="mb-2">
-                <textarea class="form-control" name="text" rows="3" placeholder="Текст решения">{{ current.text }}</textarea>
-              </div>
-              <div class="mb-2">
-                <input type="url" class="form-control" name="link" placeholder="Ссылка на работу" value="{{ current.link }}">
-              </div>
-              <button class="btn btn-primary btn-sm">Отправить через HTMX</button>
-            </form>
-          {% endwith %}
-          <div id="submission-result-{{ assignment.id }}" class="mt-2 small text-muted"></div>
-        </div>
-      </div>
-    </div>
+  {% for card in assignment_cards %}
+    {% include "partials/assignment_card.html" with card=card %}
   {% empty %}
     <div class="col-12"><div class="alert alert-secondary mb-0">Нет доступных заданий.</div></div>
   {% endfor %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="h4 mb-3">Сабмиты: {{ assignment.title }}</h1>
+<h1 class="h4 mb-3">Сдачи: {{ assignment.title }}</h1>
 <p class="text-muted">Курс: {{ assignment.course.title }}</p>
 <div class="card shadow-sm">
   <div class="table-responsive">
@@ -8,29 +8,15 @@
       <thead>
         <tr>
           <th>Студент</th>
-          <th>Текст</th>
-          <th>Ссылка</th>
-          <th>Отправлено</th>
-          <th>Оценка (HTMX)</th>
+          <th>Задание</th>
+          <th>Дата сдачи</th>
+          <th>Статус</th>
+          <th>Действие</th>
         </tr>
       </thead>
       <tbody>
-        {% for submission in submissions %}
-          <tr>
-            <td>{{ submission.student.username }}</td>
-            <td>{{ submission.text|default:"-" }}</td>
-            <td>
-              {% if submission.link %}
-                <a href="{{ submission.link }}" target="_blank">Открыть</a>
-              {% else %}
-                -
-              {% endif %}
-            </td>
-            <td>{{ submission.submitted_at|date:"d.m.Y H:i" }}</td>
-            <td>
-              {% include "partials/grade_form.html" with submission=submission %}
-            </td>
-          </tr>
+        {% for row in submission_rows %}
+          {% include "partials/submission_row.html" with row=row assignment=assignment %}
         {% empty %}
           <tr><td colspan="5" class="text-center text-muted py-4">Нет отправок.</td></tr>
         {% endfor %}

@@ -1,0 +1,33 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Оценка сдачи</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form
+      hx-post="/teacher/grade/save/{{ submission.id }}/"
+      hx-target="#submission-{{ submission.id }}"
+      hx-swap="outerHTML">
+      <div class="modal-body">
+        <p class="mb-2"><strong>Студент:</strong> {{ submission.student.username }}</p>
+        <p class="mb-3"><strong>Задание:</strong> {{ submission.assignment.title }}</p>
+        <div class="mb-3">
+          <label class="form-label">Оценка (0-100)</label>
+          <input type="number" min="0" max="100" class="form-control {% if errors.value %}is-invalid{% endif %}" name="value" value="{{ value }}">
+          {% if errors.value %}
+            <div class="invalid-feedback">{{ errors.value }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-1">
+          <label class="form-label">Комментарий</label>
+          <textarea class="form-control" name="comment" rows="3">{{ comment }}</textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        {% csrf_token %}
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>

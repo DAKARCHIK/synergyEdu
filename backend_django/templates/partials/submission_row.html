@@ -1,0 +1,19 @@
+<tr id="submission-{{ row.submission.id }}">
+  <td>{{ row.submission.student.username }}</td>
+  <td>{{ assignment.title }}</td>
+  <td>{{ row.submission.submitted_at|date:"d.m.Y H:i" }}</td>
+  <td>
+    <span class="badge text-bg-{{ row.status_badge }}">{{ row.status_label }}</span>
+    {% if row.grade_value is not None %}
+      <div class="small text-muted mt-1">Оценка: {{ row.grade_value }}</div>
+    {% endif %}
+  </td>
+  <td>
+    <a
+      class="btn btn-sm btn-outline-success"
+      href="/teacher/submissions/{{ assignment.id }}"
+      hx-get="/teacher/grade/modal/{{ row.submission.id }}/"
+      hx-target="#appModal"
+      hx-swap="innerHTML">{% if row.grade_value is not None %}Изменить оценку{% else %}Оценить{% endif %}</a>
+  </td>
+</tr>

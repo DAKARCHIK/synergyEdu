@@ -177,6 +177,27 @@
     </main>
   {% endif %}
 
+  <div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const modalEl = document.getElementById("appModal");
+      if (!modalEl) return;
+
+      document.body.addEventListener("htmx:afterSwap", function (event) {
+        if (event.detail && event.detail.target === modalEl) {
+          bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        }
+      });
+
+      document.body.addEventListener("closeModal", function () {
+        const instance = bootstrap.Modal.getInstance(modalEl);
+        if (instance) {
+          instance.hide();
+        }
+        modalEl.innerHTML = "";
+      });
+    })();
+  </script>
 </body>
 </html>
