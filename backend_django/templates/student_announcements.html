@@ -4,12 +4,12 @@
 <div class="row g-3">
   {% for item in announcements %}
     <div class="col-lg-6">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h2 class="h6">{{ item.title }}</h2>
-          <p class="mb-1"><strong>Группа:</strong> {{ item.group.name }}</p>
-          <p class="mb-1"><strong>Автор:</strong> {{ item.author.username }}</p>
-          <p>{{ item.body }}</p>
+      <div class="card shadow-sm h-100 safe-container">
+        <div class="card-body safe-container">
+          <h2 class="h6 safe-text">{{ item.title }}</h2>
+          <p class="mb-1"><strong>Группа:</strong> <span class="safe-text">{{ item.group.name }}</span></p>
+          <p class="mb-1"><strong>Автор:</strong> <span class="safe-text">{{ item.author.username }}</span></p>
+          <p class="safe-text">{{ item.body }}</p>
           <small class="text-muted">{{ item.created_at|date:"d.m.Y H:i" }}</small>
         </div>
       </div>
@@ -19,3 +19,5 @@
   {% endfor %}
 </div>
 {% endblock %}
+
+

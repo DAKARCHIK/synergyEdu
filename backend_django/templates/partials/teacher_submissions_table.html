@@ -1,4 +1,4 @@
-<table class="table table-sm">
+<table class="table table-sm safe-table">
   <thead>
     <tr>
       <th>Student</th>
@@ -9,7 +9,7 @@
   <tbody>
     {% for submission in submissions %}
       <tr>
-        <td>{{ submission.student.username }}</td>
+        <td class="safe-text">{{ submission.student.username }}</td>
         <td>{{ submission.submitted_at|date:"d.m.Y H:i" }}</td>
         <td>{{ submission.grade.value|default:"-" }}</td>
       </tr>

@@ -1,6 +1,6 @@
 <tr id="submission-{{ row.submission.id }}">
-  <td>{{ row.submission.student.username }}</td>
-  <td>{{ assignment.title }}</td>
+  <td class="safe-text">{{ row.submission.student.username }}</td>
+  <td class="safe-text">{{ assignment.title }}</td>
   <td>{{ row.submission.submitted_at|date:"d.m.Y H:i" }}</td>
   <td>
     <span class="badge text-bg-{{ row.status_badge }}">{{ row.status_label }}</span>

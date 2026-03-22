@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-  <div class="modal-content">
+  <div class="modal-content safe-container">
     <div class="modal-header">
       <h5 class="modal-title">{% if submission %}Изменить сдачу{% else %}Сдать задание{% endif %}</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -8,8 +8,8 @@
       hx-post="/student/submission/save/{{ assignment.id }}/"
       hx-target="#assignment-{{ assignment.id }}"
       hx-swap="outerHTML">
-      <div class="modal-body">
-        <p class="mb-2"><strong>{{ assignment.title }}</strong></p>
+      <div class="modal-body safe-container">
+        <p class="mb-2 safe-text"><strong>{{ assignment.title }}</strong></p>
         <p class="text-muted small">Срок: {{ assignment.due_date|date:"d.m.Y H:i" }}</p>
 
         {% if form.non_field_errors %}
@@ -43,3 +43,4 @@
     </form>
   </div>
 </div>
+

@@ -3,8 +3,8 @@
 <h1 class="h4 mb-3">Объявления преподавателя</h1>
 <div class="row g-3">
   <div class="col-lg-5">
-    <div class="card shadow-sm">
-      <div class="card-body">
+    <div class="card shadow-sm safe-container">
+      <div class="card-body safe-container">
         <h2 class="h6">Новое объявление</h2>
         <form method="post">
           {% csrf_token %}
@@ -28,14 +28,14 @@
     </div>
   </div>
   <div class="col-lg-7">
-    <div class="card shadow-sm">
-      <div class="card-body">
+    <div class="card shadow-sm safe-container">
+      <div class="card-body safe-container">
         <h2 class="h6">Мои объявления</h2>
         {% for item in announcements %}
-          <div class="border rounded p-2 mb-2">
-            <div class="fw-semibold">{{ item.title }}</div>
-            <div class="small text-muted">{{ item.group.name }} • {{ item.created_at|date:"d.m.Y H:i" }}</div>
-            <div>{{ item.body }}</div>
+          <div class="border rounded p-2 mb-2 safe-container">
+            <div class="fw-semibold safe-text">{{ item.title }}</div>
+            <div class="small text-muted safe-text">{{ item.group.name }} • {{ item.created_at|date:"d.m.Y H:i" }}</div>
+            <div class="safe-text">{{ item.body }}</div>
           </div>
         {% empty %}
           <div class="text-muted">Объявлений пока нет.</div>
@@ -45,3 +45,4 @@
   </div>
 </div>
 {% endblock %}
+

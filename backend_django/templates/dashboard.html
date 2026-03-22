@@ -1,5 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Главная | SynergyEdu{% endblock %}
+{% block extra_head %}
+<style>
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .dashboard-list .list-group-item {
+    border: 0;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 0.7rem 0;
+  }
+
+  .dashboard-list .list-group-item:last-child {
+    border-bottom: 0;
+  }
+</style>
+{% endblock %}
 {% block content %}
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
   <div>
@@ -11,17 +30,15 @@
 {% if role %}
   <div class="row g-3">
     <div class="col-12 col-xl-6">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body">
-          <h2 class="h6 mb-3"><i class="bi bi-calendar2-day me-2"></i>Сегодня занятия</h2>
+      <div class="card h-100 safe-container">
+        <div class="card-body safe-container">
+          <h2 class="section-title"><i class="bi bi-calendar2-day me-2"></i>Сегодня занятия</h2>
           {% if today_lessons %}
-            <div class="list-group list-group-flush">
+            <div class="list-group list-group-flush dashboard-list">
               {% for lesson in today_lessons %}
-                <div class="list-group-item px-0">
-                  <div class="fw-semibold">{{ lesson.course.title }}</div>
-                  <div class="small text-muted">
-                    {{ lesson.start_time }} - {{ lesson.end_time }} | {{ lesson.group.name }} | {{ lesson.room }}
-                  </div>
+                <div class="list-group-item px-0 safe-container">
+                  <div class="fw-semibold safe-text">{{ lesson.course.title }}</div>
+                  <div class="small text-muted safe-text">{{ lesson.start_time }} - {{ lesson.end_time }} | {{ lesson.group.name }} | {{ lesson.room }}</div>
                 </div>
               {% endfor %}
             </div>
@@ -33,15 +50,15 @@
     </div>
 
     <div class="col-12 col-xl-6">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body">
-          <h2 class="h6 mb-3"><i class="bi bi-clock-history me-2"></i>Ближайшие дедлайны</h2>
+      <div class="card h-100 safe-container">
+        <div class="card-body safe-container">
+          <h2 class="section-title"><i class="bi bi-clock-history me-2"></i>Ближайшие дедлайны</h2>
           {% if upcoming_assignments %}
-            <div class="list-group list-group-flush">
+            <div class="list-group list-group-flush dashboard-list">
               {% for assignment in upcoming_assignments %}
-                <div class="list-group-item px-0">
-                  <div class="fw-semibold">{{ assignment.title }}</div>
-                  <div class="small text-muted">{{ assignment.course.title }} | {{ assignment.due_date|date:"d.m.Y H:i" }}</div>
+                <div class="list-group-item px-0 safe-container">
+                  <div class="fw-semibold safe-text">{{ assignment.title }}</div>
+                  <div class="small text-muted safe-text">{{ assignment.course.title }} | {{ assignment.due_date|date:"d.m.Y H:i" }}</div>
                 </div>
               {% endfor %}
             </div>
@@ -53,15 +70,15 @@
     </div>
 
     <div class="col-12 col-xl-6">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body">
-          <h2 class="h6 mb-3"><i class="bi bi-megaphone me-2"></i>Новые объявления</h2>
+      <div class="card h-100 safe-container">
+        <div class="card-body safe-container">
+          <h2 class="section-title"><i class="bi bi-megaphone me-2"></i>Новые объявления</h2>
           {% if latest_announcements %}
-            <div class="list-group list-group-flush">
+            <div class="list-group list-group-flush dashboard-list">
               {% for item in latest_announcements %}
-                <div class="list-group-item px-0">
-                  <div class="fw-semibold">{{ item.title }}</div>
-                  <div class="small text-muted">{{ item.group.name }} | {{ item.created_at|date:"d.m.Y H:i" }}</div>
+                <div class="list-group-item px-0 safe-container">
+                  <div class="fw-semibold safe-text">{{ item.title }}</div>
+                  <div class="small text-muted safe-text">{{ item.group.name }} | {{ item.created_at|date:"d.m.Y H:i" }}</div>
                 </div>
               {% endfor %}
             </div>
@@ -73,9 +90,9 @@
     </div>
 
     <div class="col-12 col-xl-6">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-body">
-          <h2 class="h6 mb-3"><i class="bi bi-lightning-charge me-2"></i>Быстрые действия</h2>
+      <div class="card h-100 safe-container">
+        <div class="card-body safe-container">
+          <h2 class="section-title"><i class="bi bi-lightning-charge me-2"></i>Быстрые действия</h2>
           <div class="d-grid gap-2 mb-3">
             {% for action in quick_actions %}
               <a href="{{ action.url }}" class="btn btn-outline-primary text-start">
@@ -113,11 +130,9 @@
     </div>
   </div>
 {% else %}
-  <div class="card shadow-sm border-0">
+  <div class="card">
     <div class="card-body">
-      <p class="mb-0">
-        Для пользователя не назначена роль. Назначьте группу `ADMIN`, `TEACHER` или `STUDENT` в Django Admin.
-      </p>
+      <p class="mb-0">Для пользователя не назначена роль. Назначьте группу `ADMIN`, `TEACHER` или `STUDENT` в Django Admin.</p>
     </div>
   </div>
 {% endif %}

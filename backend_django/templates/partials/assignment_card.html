@@ -1,23 +1,23 @@
-<div class="col-lg-6" id="assignment-{{ card.assignment.id }}">
-  <div class="card shadow-sm h-100">
-    <div class="card-body">
+<div class="col-lg-6 safe-container" id="assignment-{{ card.assignment.id }}">
+  <div class="card shadow-sm h-100 safe-container">
+    <div class="card-body safe-container">
       <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-        <h2 class="h6 mb-0">{{ card.assignment.title }}</h2>
+        <h2 class="h6 mb-0 safe-text">{{ card.assignment.title }}</h2>
         <span class="badge text-bg-{{ card.status_badge }}">{{ card.status_label }}</span>
       </div>
-      <p class="mb-1"><strong>Курс:</strong> {{ card.assignment.course.title }}</p>
+      <p class="mb-1 safe-text"><strong>Курс:</strong> {{ card.assignment.course.title }}</p>
       <p class="mb-2"><strong>Срок:</strong> {{ card.assignment.due_date|date:"d.m.Y H:i" }}</p>
       {% if card.assignment.description %}
-        <p class="text-muted small mb-3">{{ card.assignment.description }}</p>
+        <p class="text-muted small mb-3 safe-text">{{ card.assignment.description }}</p>
       {% endif %}
 
       {% if card.submission %}
-        <div class="small border rounded p-2 mb-3 bg-light-subtle">
+        <div class="small border rounded p-2 mb-3 bg-light-subtle safe-container">
           <div><strong>Сдано:</strong> {{ card.submission.submitted_at|date:"d.m.Y H:i" }}</div>
           {% if card.submission.link %}
             <div><strong>Ссылка:</strong> <a href="{{ card.submission.link }}" target="_blank" rel="noopener noreferrer">Открыть</a></div>
           {% endif %}
-          <div><strong>Текст:</strong> {{ card.submission.text|default:"-"|truncatechars:120 }}</div>
+          <div><strong>Текст:</strong> <span class="safe-text">{{ card.submission.text|default:"-"|truncatechars:120 }}</span></div>
           {% if card.is_graded %}
             <div><strong>Оценка:</strong> {{ card.submission.grade.value }}</div>
           {% endif %}
@@ -42,3 +42,5 @@
     </div>
   </div>
 </div>
+
+

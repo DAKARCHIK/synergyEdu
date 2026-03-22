@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-  <div class="modal-content">
+  <div class="modal-content safe-container">
     <div class="modal-header">
       <h5 class="modal-title">Оценка сдачи</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -8,9 +8,9 @@
       hx-post="/teacher/grade/save/{{ submission.id }}/"
       hx-target="#submission-{{ submission.id }}"
       hx-swap="outerHTML">
-      <div class="modal-body">
-        <p class="mb-2"><strong>Студент:</strong> {{ submission.student.username }}</p>
-        <p class="mb-3"><strong>Задание:</strong> {{ submission.assignment.title }}</p>
+      <div class="modal-body safe-container">
+        <p class="mb-2"><strong>Студент:</strong> <span class="safe-text">{{ submission.student.username }}</span></p>
+        <p class="mb-3"><strong>Задание:</strong> <span class="safe-text">{{ submission.assignment.title }}</span></p>
         <div class="mb-3">
           <label class="form-label">Оценка (0-100)</label>
           <input type="number" min="0" max="100" class="form-control {% if errors.value %}is-invalid{% endif %}" name="value" value="{{ value }}">
@@ -31,3 +31,4 @@
     </form>
   </div>
 </div>
+

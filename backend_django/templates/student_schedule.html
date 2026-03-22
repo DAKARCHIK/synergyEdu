@@ -3,7 +3,12 @@
 {% block extra_head %}
 <style>
   .today-col {
-    background-color: #eef6ff !important;
+    background-color: #fff4f5 !important;
+  }
+
+  .schedule-table thead th {
+    white-space: nowrap;
+    font-weight: 600;
   }
 </style>
 {% endblock %}
@@ -28,12 +33,12 @@
 {% elif not schedule_rows %}
   <div class="alert alert-secondary mb-0">Расписание пока пустое.</div>
 {% else %}
-  <div class="card shadow-sm border-0">
+  <div class="card">
     <div class="card-body pb-0">
       <p class="small text-muted mb-3">Группа: <span class="fw-semibold">{{ group.name }}</span></p>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped table-hover align-middle mb-0">
+      <table class="table table-hover align-middle mb-0 schedule-table">
         <thead class="table-light">
           <tr>
             <th class="text-nowrap">Время</th>
@@ -51,7 +56,7 @@
                   {% if cell.lesson %}
                     <div class="fw-semibold">{{ cell.lesson.course.title }}</div>
                     <div class="small text-muted">{{ cell.lesson.teacher.get_full_name|default:cell.lesson.teacher.username }}</div>
-                    <span class="badge text-bg-secondary mt-1">{{ cell.lesson.room }}</span>
+                    <span class="badge bg-secondary mt-1">{{ cell.lesson.room }}</span>
                   {% else %}
                     <span class="text-muted">-</span>
                   {% endif %}

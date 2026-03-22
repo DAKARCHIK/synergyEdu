@@ -135,8 +135,12 @@ def submit_assignment_view(request, assignment_id: int):
         return HttpResponseBadRequest("HTMX POST only")
 
     assignment = get_object_or_404(Assignment, id=assignment_id, course__enrollments__student=request.user)
-    text = request.POST.get("text", "").strip()
-    link = request.POST.get("link", "").strip()
+    form = SubmissionForm(request.POST)
+    if not form.is_valid():
+        return HttpResponseBadRequest("Invalid submission payload")
+
+    text = form.cleaned_data["text"]
+    link = form.cleaned_data["link"]
     submission, _ = Submission.objects.update_or_create(
         assignment=assignment,
         student=request.user,

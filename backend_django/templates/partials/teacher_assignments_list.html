@@ -1,6 +1,6 @@
-<div class="card shadow-sm">
-  <div class="table-responsive">
-    <table class="table mb-0">
+<div class="card shadow-sm safe-container">
+  <div class="table-responsive safe-container">
+    <table class="table mb-0 safe-table">
       <thead>
         <tr>
           <th>Курс</th>
@@ -12,8 +12,8 @@
       <tbody>
         {% for assignment in assignments %}
           <tr>
-            <td>{{ assignment.course.title }}</td>
-            <td>{{ assignment.title }}</td>
+            <td class="safe-text">{{ assignment.course.title }}</td>
+            <td class="safe-text">{{ assignment.title }}</td>
             <td>{{ assignment.due_date|date:"d.m.Y H:i" }}</td>
             <td><a class="btn btn-sm btn-outline-primary" href="/teacher/submissions/{{ assignment.id }}">Сабмиты</a></td>
           </tr>

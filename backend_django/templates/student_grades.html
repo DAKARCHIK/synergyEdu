@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 class="h4 mb-3">Мои оценки</h1>
-<div class="card shadow-sm">
-  <div class="table-responsive">
-    <table class="table table-hover mb-0">
+<div class="card shadow-sm safe-container">
+  <div class="table-responsive safe-container">
+    <table class="table table-hover mb-0 safe-table">
       <thead>
         <tr>
           <th>Курс</th>
@@ -17,11 +17,11 @@
       <tbody>
         {% for grade in grades %}
           <tr>
-            <td>{{ grade.submission.assignment.course.title }}</td>
-            <td>{{ grade.submission.assignment.title }}</td>
+            <td class="safe-text">{{ grade.submission.assignment.course.title }}</td>
+            <td class="safe-text">{{ grade.submission.assignment.title }}</td>
             <td><span class="badge text-bg-success">{{ grade.value }}</span></td>
-            <td>{{ grade.comment|default:"-" }}</td>
-            <td>{{ grade.graded_by.username }}</td>
+            <td class="safe-text">{{ grade.comment|default:"-" }}</td>
+            <td class="safe-text">{{ grade.graded_by.username }}</td>
             <td>{{ grade.graded_at|date:"d.m.Y H:i" }}</td>
           </tr>
         {% empty %}

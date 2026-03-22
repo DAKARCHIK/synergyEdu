@@ -1,7 +1,48 @@
 body {
   background-color: #f7f8fa;
+  overflow-x: hidden;
 }
 
 .card {
   border: 1px solid #e8ebef;
+}
+
+.safe-text {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.safe-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.safe-table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+.safe-table th,
+.safe-table td {
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.row > [class*="col-"],
+.card,
+.card-body,
+.list-group-item,
+.table-responsive,
+.main-content,
+.main-content > .container,
+.main-content > .container-fluid {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  min-width: 0;
 }
