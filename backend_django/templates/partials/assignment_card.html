@@ -27,14 +27,14 @@
       {% if card.can_submit %}
         <a
           class="btn btn-primary btn-sm"
-          href="/student/assignments"
+          href="{% url 'student_assignments' %}"
           hx-get="/student/submission/modal/{{ card.assignment.id }}/"
           hx-target="#appModal"
           hx-swap="innerHTML">Сдать</a>
       {% elif card.can_edit %}
         <a
           class="btn btn-outline-primary btn-sm"
-          href="/student/assignments"
+          href="{% url 'student_assignments' %}"
           hx-get="/student/submission/modal/{{ card.assignment.id }}/"
           hx-target="#appModal"
           hx-swap="innerHTML">Изменить сдачу</a>

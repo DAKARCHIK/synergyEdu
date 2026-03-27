@@ -1,0 +1,85 @@
+﻿{% extends "base.html" %}
+{% block title %}Заявки преподавателей | SynergyEdu{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-1">Заявки преподавателей</h1>
+    <p class="text-muted mb-0">Модерация заявок на роль TEACHER</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form method="get" class="row g-2 align-items-end mb-3">
+      <div class="col-12 col-sm-5 col-md-4 col-lg-3">
+        <label for="status" class="form-label">Статус</label>
+        <select id="status" name="status" class="form-select">
+          <option value="all" {% if status_filter == 'all' %}selected{% endif %}>Все</option>
+          <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Ожидает</option>
+          <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Одобрена</option>
+          <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Отклонена</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Применить</button>
+      </div>
+    </form>
+
+    <div class="table-responsive">
+      <table class="table align-middle safe-table">
+        <thead>
+          <tr>
+            <th>ФИО</th>
+            <th>Логин</th>
+            <th>Email</th>
+            <th>Комментарий / дисциплина</th>
+            <th>Дата заявки</th>
+            <th>Статус</th>
+            <th class="text-end">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in requests %}
+            <tr>
+              <td class="safe-text">{{ item.full_name }}</td>
+              <td class="safe-text">{{ item.username }}</td>
+              <td class="safe-text">{{ item.email }}</td>
+              <td class="safe-text">{{ item.comment|default:'-' }}</td>
+              <td>{{ item.created_at|date:"d.m.Y H:i" }}</td>
+              <td>
+                {% if item.status == 'pending' %}
+                  <span class="badge text-bg-warning">pending</span>
+                {% elif item.status == 'approved' %}
+                  <span class="badge text-bg-success">approved</span>
+                {% else %}
+                  <span class="badge text-bg-secondary">rejected</span>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                {% if item.status == 'pending' %}
+                  <div class="d-inline-flex gap-2">
+                    <form method="post" action="{% url 'teacher_request_approve' item.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-success">Одобрить</button>
+                    </form>
+                    <form method="post" action="{% url 'teacher_request_reject' item.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Отклонить</button>
+                    </form>
+                  </div>
+                {% else %}
+                  <span class="text-muted small">Обработано</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">Заявок не найдено.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

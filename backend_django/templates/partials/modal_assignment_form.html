@@ -1,0 +1,60 @@
+﻿<div class="modal-dialog">
+  <div class="modal-content safe-container">
+    <div class="modal-header">
+      <h5 class="modal-title">{% if is_edit %}Редактировать задание{% else %}Создать задание{% endif %}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form
+      hx-post="{% if is_edit %}{% url 'teacher_assignment_edit_save' assignment.id %}{% else %}{% url 'teacher_assignment_create_save' %}{% endif %}"
+      hx-target="#appModal"
+      hx-swap="innerHTML">
+      <div class="modal-body safe-container">
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2">
+            {% for error in form.non_field_errors %}
+              <div>{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.title.id_for_label }}">Название</label>
+          {{ form.title }}
+          {% for error in form.title.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.description.id_for_label }}">Описание</label>
+          {{ form.description }}
+          {% for error in form.description.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.due_date.id_for_label }}">Срок сдачи</label>
+          {{ form.due_date }}
+          {% for error in form.due_date.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-1">
+          <label class="form-label" for="{{ form.course.id_for_label }}">Курс</label>
+          {{ form.course }}
+          {% for error in form.course.errors %}
+            <div class="text-danger small mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        {% csrf_token %}
+        <input type="hidden" name="selected_course" value="{{ selected_course|default:'' }}">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,4 +1,5 @@
-from django.conf import settings
+﻿from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 
@@ -54,7 +55,7 @@ class Grade(models.Model):
         on_delete=models.CASCADE,
         related_name="grade",
     )
-    value = models.IntegerField("Оценка")
+    value = models.IntegerField("Оценка", validators=[MinValueValidator(0), MaxValueValidator(100)])
     comment = models.TextField("Комментарий", blank=True)
     graded_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,

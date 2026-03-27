@@ -1,10 +1,11 @@
-{% load static %}
+﻿{% load static %}
 <!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}SynergyEdu{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <script src="https://unpkg.com/htmx.org@1.9.12"></script>
@@ -36,6 +37,13 @@
     .app-topbar .navbar-brand,
     .app-topbar .small {
       color: #ffffff;
+    }
+
+    .brand-logo {
+      height: 44px;
+      max-width: min(58vw, 520px);
+      width: auto;
+      display: block;
     }
 
     .app-topbar .btn-outline-light:hover {
@@ -128,12 +136,21 @@
       border-color: rgba(227, 6, 19, 0.45);
       box-shadow: 0 0 0 0.2rem rgba(227, 6, 19, 0.15);
     }
+
+    .app-footer {
+      border-top: 1px solid var(--border-soft);
+      background: #ffffff;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
   </style>
   {% block extra_head %}{% endblock %}
 </head>
 <body>
   <header class="navbar navbar-dark app-topbar sticky-top px-3 px-lg-4">
-    <a class="navbar-brand fw-semibold mb-0" href="/">SynergyEdu Учебный портал Техникума</a>
+    <a class="navbar-brand fw-semibold mb-0" href="{% url 'home' %}" aria-label="SynergyEdu">
+      <img src="{% static 'img/logo.svg' %}" alt="SynergyEdu" class="brand-logo">
+    </a>
     <div class="d-flex align-items-center gap-3 ms-auto">
       {% if user.is_authenticated %}
         <span class="small text-white-50 safe-text">{{ user.get_full_name|default:user.username }}</span>
@@ -142,7 +159,7 @@
           <button type="submit" class="btn btn-outline-light btn-sm">Выйти</button>
         </form>
       {% else %}
-        <a href="/login" class="btn btn-outline-light btn-sm">Войти</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Войти</a>
       {% endif %}
     </div>
   </header>
@@ -153,43 +170,55 @@
         <div class="small text-uppercase text-white-50 fw-semibold mb-3">Навигация</div>
         <nav class="d-flex flex-column gap-1">
           {% if current_role == "ADMIN" %}
-            <a href="/" class="menu-link {% if request.path == '/' %}active{% endif %}">
+            <a href="{% url 'dashboard' %}" class="menu-link {% if request.path == '/dashboard' %}active{% endif %}">
               <i class="bi bi-house-door"></i> Главная
             </a>
-            <a href="/admin" class="menu-link {% if '/admin' in request.path %}active{% endif %}">
+            <a href="{% url 'profile' %}" class="menu-link {% if request.path == '/profile' %}active{% endif %}">
+              <i class="bi bi-person-circle"></i> Профиль
+            </a>
+            <a href="{% url 'admin:index' %}" class="menu-link {% if '/admin/' in request.path %}active{% endif %}">
               <i class="bi bi-shield-lock"></i> Админ-панель
+            </a>
+            <a href="{% url 'teacher_requests_admin' %}" class="menu-link {% if '/admin-dashboard/teacher-requests' in request.path %}active{% endif %}">
+              <i class="bi bi-person-workspace"></i> Заявки преподавателей
             </a>
           {% endif %}
 
           {% if current_role == "STUDENT" %}
-            <a href="/" class="menu-link {% if request.path == '/' %}active{% endif %}">
+            <a href="{% url 'dashboard' %}" class="menu-link {% if request.path == '/dashboard' %}active{% endif %}">
               <i class="bi bi-house-door"></i> Главная
             </a>
-            <a href="/student/schedule" class="menu-link {% if '/student/schedule' in request.path %}active{% endif %}">
+            <a href="{% url 'profile' %}" class="menu-link {% if request.path == '/profile' %}active{% endif %}">
+              <i class="bi bi-person-circle"></i> Профиль
+            </a>
+            <a href="{% url 'student_schedule' %}" class="menu-link {% if '/student/schedule' in request.path %}active{% endif %}">
               <i class="bi bi-calendar-week"></i> Расписание
             </a>
-            <a href="/student/assignments" class="menu-link {% if '/student/assignments' in request.path %}active{% endif %}">
+            <a href="{% url 'student_assignments' %}" class="menu-link {% if '/student/assignments' in request.path %}active{% endif %}">
               <i class="bi bi-journal-check"></i> Задания
             </a>
-            <a href="/student/grades" class="menu-link {% if '/student/grades' in request.path %}active{% endif %}">
+            <a href="{% url 'student_grades' %}" class="menu-link {% if '/student/grades' in request.path %}active{% endif %}">
               <i class="bi bi-bar-chart"></i> Оценки
             </a>
-            <a href="/student/announcements" class="menu-link {% if '/student/announcements' in request.path %}active{% endif %}">
+            <a href="{% url 'student_announcements' %}" class="menu-link {% if '/student/announcements' in request.path %}active{% endif %}">
               <i class="bi bi-megaphone"></i> Объявления
             </a>
           {% endif %}
 
           {% if current_role == "TEACHER" %}
-            <a href="/" class="menu-link {% if request.path == '/' %}active{% endif %}">
+            <a href="{% url 'dashboard' %}" class="menu-link {% if request.path == '/dashboard' %}active{% endif %}">
               <i class="bi bi-house-door"></i> Главная
             </a>
-            <a href="/teacher/assignments" class="menu-link {% if '/teacher/assignments' in request.path %}active{% endif %}">
+            <a href="{% url 'profile' %}" class="menu-link {% if request.path == '/profile' %}active{% endif %}">
+              <i class="bi bi-person-circle"></i> Профиль
+            </a>
+            <a href="{% url 'teacher_assignments' %}" class="menu-link {% if '/teacher/assignments' in request.path %}active{% endif %}">
               <i class="bi bi-journal-text"></i> Задания
             </a>
-            <a href="/teacher/assignments" class="menu-link {% if '/teacher/submissions/' in request.path or '/teacher/grade/' in request.path %}active{% endif %}">
+            <a href="{% url 'teacher_assignments' %}" class="menu-link {% if '/teacher/submissions/' in request.path or '/teacher/grade/' in request.path %}active{% endif %}">
               <i class="bi bi-inbox"></i> Сдачи
             </a>
-            <a href="/teacher/announcements" class="menu-link {% if '/teacher/announcements' in request.path %}active{% endif %}">
+            <a href="{% url 'teacher_announcements' %}" class="menu-link {% if '/teacher/announcements' in request.path %}active{% endif %}">
               <i class="bi bi-megaphone"></i> Объявления
             </a>
           {% endif %}
@@ -210,23 +239,26 @@
     </div>
   {% else %}
     <main class="login-wrap">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-12 col-sm-10 col-md-7 col-lg-5">
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              {% endfor %}
-            {% endif %}
-            {% block auth_content %}{% endblock %}
-          </div>
-        </div>
+      <div class="auth-shell">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block auth_content %}{% endblock %}
       </div>
     </main>
   {% endif %}
+
+  <footer class="app-footer py-2 px-3 px-lg-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span>SynergyEdu</span>
+      <span>© {% now "Y" %}</span>
+    </div>
+  </footer>
 
   <div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

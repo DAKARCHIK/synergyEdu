@@ -1,0 +1,68 @@
+﻿{% extends "base.html" %}
+{% block title %}Профиль | SynergyEdu{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-xl-8">
+    <div class="card shadow-sm safe-container">
+      <div class="card-body p-4 p-lg-5 safe-container">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+            <i class="bi bi-person fs-3 text-danger"></i>
+          </div>
+          <div>
+            <h1 class="h4 mb-1">Профиль пользователя</h1>
+            <p class="text-muted mb-0">Информация об аккаунте</p>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <div class="small text-muted mb-1">ФИО</div>
+              <div class="fw-semibold safe-text">{{ user.get_full_name|default:user.username }}</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <div class="small text-muted mb-1">Email</div>
+              <div class="fw-semibold safe-text">{{ user.email|default:"-" }}</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="border rounded-3 p-3 h-100">
+              <div class="small text-muted mb-1">Роль</div>
+              <span class="badge text-bg-primary">{{ role|default:"-" }}</span>
+            </div>
+          </div>
+
+          {% if role == "STUDENT" %}
+            <div class="col-12 col-md-6">
+              <div class="border rounded-3 p-3 h-100">
+                <div class="small text-muted mb-1">Группа</div>
+                <div class="fw-semibold safe-text">{% if student_group %}{{ student_group.name }}{% else %}-{% endif %}</div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if role == "TEACHER" %}
+          <hr class="my-4">
+          <h2 class="h6 mb-3">Курсы преподавателя</h2>
+          <div class="d-grid gap-2">
+            {% for course in teacher_courses %}
+              <div class="border rounded-3 p-3">
+                <div class="fw-semibold safe-text">{{ course.title }}</div>
+                {% if course.group %}
+                  <div class="small text-muted">Группа: {{ course.group.name }}</div>
+                {% endif %}
+              </div>
+            {% empty %}
+              <div class="text-muted">Курсы не назначены.</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

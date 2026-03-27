@@ -1,0 +1,28 @@
+﻿{% extends "base.html" %}
+{% block title %}403 | SynergyEdu{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8 col-xl-6">
+    <div class="card shadow-sm">
+      <div class="card-body text-center p-4 p-lg-5">
+        <div class="display-6 fw-bold text-danger mb-2">403</div>
+        <h1 class="h4 mb-2">Доступ запрещен</h1>
+        <p class="text-muted mb-4">У вас недостаточно прав для просмотра этой страницы.</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">На главную</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block auth_content %}
+<div class="card login-card">
+  <div class="card-body text-center p-4 p-lg-5">
+    <div class="display-6 fw-bold text-danger mb-2">403</div>
+    <h1 class="h4 mb-2">Доступ запрещен</h1>
+    <p class="text-muted mb-4">У вас недостаточно прав для просмотра этой страницы.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary w-100">Войти</a>
+  </div>
+</div>
+{% endblock %}

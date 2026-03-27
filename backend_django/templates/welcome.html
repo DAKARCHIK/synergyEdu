@@ -1,0 +1,125 @@
+﻿{% extends "base.html" %}
+{% block title %}Добро пожаловать | SynergyEdu{% endblock %}
+{% block extra_head %}
+<style>
+  .login-wrap .auth-shell {
+    width: min(100%, 920px);
+  }
+
+  .welcome-card {
+    width: min(100%, 860px);
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 16px 44px rgba(10, 18, 34, 0.16);
+    overflow: hidden;
+  }
+
+  .welcome-head {
+    background: linear-gradient(125deg, #e30613 0%, #ff4d4d 100%);
+    color: #fff;
+    padding: 2rem 2rem 1.6rem;
+  }
+
+  .welcome-body {
+    padding: 1.5rem 2rem 2rem;
+  }
+
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .role-option {
+    border: 1px solid #d9dee7;
+    border-radius: 14px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+
+  .role-option.active {
+    border-color: #e30613;
+    box-shadow: 0 0 0 .22rem rgba(227, 6, 19, .12);
+    transform: translateY(-2px);
+  }
+
+  .role-option input {
+    display: none;
+  }
+
+  .role-title {
+    font-weight: 700;
+    margin-bottom: .25rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .welcome-head,
+    .welcome-body {
+      padding: 1.2rem;
+    }
+
+    .role-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+{% block auth_content %}
+<div class="card welcome-card">
+  <div class="welcome-head">
+    <h1 class="h3 mb-1">Добро пожаловать в SynergyEdu</h1>
+    <p class="mb-0 opacity-75">Учебный портал Техникума</p>
+  </div>
+  <div class="welcome-body">
+    <div class="mb-3">
+      <div class="small text-uppercase text-muted fw-semibold mb-2">Выбор роли</div>
+      <div class="role-grid" id="roleGrid">
+        <label class="role-option active" data-role="student" for="role-student">
+          <input type="radio" name="role" id="role-student" value="student" checked>
+          <div class="role-title">Студент</div>
+          <div class="text-muted small">Самостоятельная регистрация с выбором учебной группы.</div>
+        </label>
+        <label class="role-option" data-role="teacher" for="role-teacher">
+          <input type="radio" name="role" id="role-teacher" value="teacher">
+          <div class="role-title">Преподаватель</div>
+          <div class="text-muted small">Отправка заявки на регистрацию для подтверждения администратором.</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="d-grid d-sm-flex gap-2">
+      <a id="registerButton" href="{% url 'register_student' %}" class="btn btn-primary btn-lg px-4">Зарегистрироваться</a>
+      <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg px-4">Войти</a>
+    </div>
+
+    <p class="text-muted small mb-0 mt-3">Если аккаунт уже есть, используйте вход.</p>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const roleGrid = document.getElementById('roleGrid');
+    const registerButton = document.getElementById('registerButton');
+    if (!roleGrid || !registerButton) return;
+
+    const links = {
+      student: "{% url 'register_student' %}",
+      teacher: "{% url 'register_teacher' %}",
+    };
+
+    roleGrid.addEventListener('click', function (event) {
+      const option = event.target.closest('.role-option');
+      if (!option) return;
+
+      roleGrid.querySelectorAll('.role-option').forEach(el => el.classList.remove('active'));
+      option.classList.add('active');
+
+      const role = option.dataset.role;
+      const input = option.querySelector('input[type="radio"]');
+      if (input) input.checked = true;
+      registerButton.href = links[role] || links.student;
+    });
+  })();
+</script>
+{% endblock %}

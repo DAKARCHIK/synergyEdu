@@ -14,7 +14,7 @@ from .models import Announcement
 def student_announcements_view(request):
     announcements = Announcement.objects.filter(group__courses__enrollments__student=request.user).select_related(
         "group", "author"
-    )
+    ).distinct()
     return render(request, "student_announcements.html", {"announcements": announcements})
 
 

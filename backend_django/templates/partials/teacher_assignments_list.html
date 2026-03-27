@@ -1,4 +1,4 @@
-<div class="card shadow-sm safe-container">
+﻿<div class="card shadow-sm safe-container">
   <div class="table-responsive safe-container">
     <table class="table mb-0 safe-table">
       <thead>
@@ -6,7 +6,7 @@
           <th>Курс</th>
           <th>Задание</th>
           <th>Срок</th>
-          <th></th>
+          <th class="text-end">Действия</th>
         </tr>
       </thead>
       <tbody>
@@ -15,7 +15,31 @@
             <td class="safe-text">{{ assignment.course.title }}</td>
             <td class="safe-text">{{ assignment.title }}</td>
             <td>{{ assignment.due_date|date:"d.m.Y H:i" }}</td>
-            <td><a class="btn btn-sm btn-outline-primary" href="/teacher/submissions/{{ assignment.id }}">Сабмиты</a></td>
+            <td>
+              <div class="d-flex justify-content-end gap-2 flex-wrap">
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'teacher_submissions' assignment.id %}">Сдачи</a>
+                <a
+                  class="btn btn-sm btn-outline-secondary"
+                  href="{% url 'teacher_assignment_edit_modal' assignment.id %}{% if selected_course %}?course={{ selected_course }}{% endif %}"
+                  hx-get="{% url 'teacher_assignment_edit_modal' assignment.id %}{% if selected_course %}?course={{ selected_course }}{% endif %}"
+                  hx-target="#appModal"
+                  hx-swap="innerHTML">
+                  Редактировать
+                </a>
+                <form
+                  method="post"
+                  action="{% url 'teacher_assignment_delete' assignment.id %}"
+                  hx-post="{% url 'teacher_assignment_delete' assignment.id %}"
+                  hx-target="#teacher-assignment-list"
+                  hx-swap="innerHTML"
+                  onsubmit="return confirm('Удалить задание?');"
+                  class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="selected_course" value="{{ selected_course|default:'' }}">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                </form>
+              </div>
+            </td>
           </tr>
         {% empty %}
           <tr><td colspan="4" class="text-center text-muted py-4">Задания не найдены.</td></tr>

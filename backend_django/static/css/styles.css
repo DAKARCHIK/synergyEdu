@@ -7,6 +7,25 @@ body {
   border: 1px solid #e8ebef;
 }
 
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 14px 42px rgba(15, 23, 42, 0.12);
+}
+
+@media (max-width: 575.98px) {
+  .login-wrap {
+    padding: 1rem;
+  }
+
+  .login-card .card-body {
+    padding: 1.5rem !important;
+  }
+}
+
 .safe-text {
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -45,4 +64,35 @@ body {
   max-width: 100%;
   overflow: hidden;
   min-width: 0;
+}
+
+.login-wrap {
+  background: radial-gradient(circle at top, #ffffff 0%, #f2f4f8 65%);
+}
+
+.login-wrap .auth-shell {
+  width: min(100%, 500px);
+}
+
+.login-wrap .login-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+.login-card .card-body {
+  padding: 2.25rem !important;
+}
+
+.login-card .form-label {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.login-card .form-control {
+  border-radius: 0.75rem;
+  min-height: 48px;
+}
+
+.login-card .btn-primary {
+  border-radius: 0.75rem;
 }

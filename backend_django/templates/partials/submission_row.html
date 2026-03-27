@@ -11,7 +11,7 @@
   <td>
     <a
       class="btn btn-sm btn-outline-success"
-      href="/teacher/submissions/{{ assignment.id }}"
+      href="{% url 'teacher_submissions' assignment.id %}"
       hx-get="/teacher/grade/modal/{{ row.submission.id }}/"
       hx-target="#appModal"
       hx-swap="innerHTML">{% if row.grade_value is not None %}Изменить оценку{% else %}Оценить{% endif %}</a>
