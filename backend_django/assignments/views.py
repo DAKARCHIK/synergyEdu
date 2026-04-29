@@ -273,6 +273,19 @@ def teacher_assignment_delete_view(request, assignment_id: int):
 
 @login_required
 @role_required(TEACHER)
+def teacher_all_submissions_view(request):
+    submissions = (
+        Submission.objects
+        .filter(assignment__course__teacher=request.user)
+        .select_related("student", "assignment", "assignment__course", "grade")
+        .order_by("assignment__due_date", "-submitted_at")
+    )
+    submission_rows = [_build_submission_row(s) for s in submissions]
+    return render(request, "teacher_all_submissions.html", {"submission_rows": submission_rows})
+
+
+@login_required
+@role_required(TEACHER)
 def teacher_submissions_view(request, assignment_id: int):
     assignment = get_object_or_404(Assignment, id=assignment_id, course__teacher=request.user)
     submissions = Submission.objects.filter(assignment=assignment).select_related("student", "assignment", "grade")

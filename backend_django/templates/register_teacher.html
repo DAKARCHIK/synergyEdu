@@ -1,10 +1,64 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
+{% load static %}
 {% block title %}Заявка преподавателя | SynergyEdu{% endblock %}
+{% block extra_head %}
+<style>
+  .login-wrap { align-items: flex-start; padding-top: 2rem; padding-bottom: 2rem; }
+  .login-wrap .auth-shell { width: 100%; max-width: 960px; }
+
+  .reg-card {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    border: 0;
+    border-radius: 22px;
+    box-shadow: 0 18px 56px rgba(10,18,34,.15);
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .reg-form-col {
+    flex: 0 0 58%;
+    width: 58%;
+    padding: 2.8rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .reg-illus-col {
+    flex: 0 0 42%;
+    width: 42%;
+    background: #fff;
+    border-left: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+  }
+
+  .reg-illus-col img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,.10));
+  }
+
+  .reg-form-col h1 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin-bottom: .3rem;
+  }
+</style>
+{% endblock %}
 {% block auth_content %}
-<div class="card login-card">
-  <div class="card-body p-4 p-lg-5">
-    <div class="text-center mb-4">
-      <h1 class="h4 mb-1">Заявка преподавателя</h1>
+<div class="card reg-card">
+
+  <div class="reg-form-col">
+    <div class="mb-4">
+      <h1>Заявка преподавателя</h1>
       <p class="text-muted mb-0">После отправки заявка получит статус pending</p>
     </div>
 
@@ -25,10 +79,15 @@
         </div>
       {% endfor %}
 
-      <button type="submit" class="btn btn-primary btn-lg w-100">Отправить заявку</button>
+      <button type="submit" class="btn btn-primary btn-lg w-100 mt-1">Отправить заявку</button>
       <a href="{% url 'login' %}" class="btn btn-outline-primary w-100">Уже есть аккаунт? Войти</a>
-      <a href="{% url 'home' %}" class="btn btn-link text-decoration-none">Назад</a>
+      <a href="{% url 'home' %}" class="btn btn-link text-decoration-none text-center">← Назад</a>
     </form>
   </div>
+
+  <div class="reg-illus-col">
+    <img src="{% static 'img/teacher_reg.svg' %}" alt="Преподаватель">
+  </div>
+
 </div>
 {% endblock %}

@@ -1,96 +1,196 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Добро пожаловать | SynergyEdu{% endblock %}
 {% block extra_head %}
 <style>
   .login-wrap .auth-shell {
-    width: min(100%, 920px);
+    width: min(100%, 960px);
   }
 
   .welcome-card {
-    width: min(100%, 860px);
+    width: min(100%, 900px);
     border: 0;
-    border-radius: 20px;
-    box-shadow: 0 16px 44px rgba(10, 18, 34, 0.16);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(10, 18, 34, 0.18);
     overflow: hidden;
   }
 
   .welcome-head {
     background: linear-gradient(125deg, #e30613 0%, #ff4d4d 100%);
     color: #fff;
-    padding: 2rem 2rem 1.6rem;
+    padding: 2.2rem 2.5rem 1.8rem;
   }
 
   .welcome-body {
-    padding: 1.5rem 2rem 2rem;
+    padding: 2rem 2.5rem 2.5rem;
   }
 
   .role-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   .role-option {
-    border: 1px solid #d9dee7;
-    border-radius: 14px;
-    padding: 1rem;
+    border: 2px solid #e4e8f0;
+    border-radius: 18px;
+    padding: 0;
     cursor: pointer;
-    transition: border-color .2s, box-shadow .2s, transform .2s;
+    transition: border-color .22s, box-shadow .22s, transform .22s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .role-option:hover {
+    border-color: #f5a0a6;
+    box-shadow: 0 6px 24px rgba(227, 6, 19, .10);
+    transform: translateY(-3px);
   }
 
   .role-option.active {
     border-color: #e30613;
-    box-shadow: 0 0 0 .22rem rgba(227, 6, 19, .12);
-    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(227, 6, 19, .18);
+    transform: translateY(-4px);
   }
 
   .role-option input {
     display: none;
   }
 
+  .role-illus {
+    background: linear-gradient(160deg, #fff5f5 0%, #fff0f0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.6rem 1rem;
+    border-bottom: 1px solid #f0e0e0;
+    transition: background .22s;
+  }
+
+  .role-option.active .role-illus {
+    background: linear-gradient(160deg, #ffe8e8 0%, #ffd6d6 100%);
+  }
+
+  .role-illus img {
+    height: 140px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(227,6,19,.12));
+    transition: transform .22s;
+  }
+
+  .role-option:hover .role-illus img,
+  .role-option.active .role-illus img {
+    transform: scale(1.06);
+  }
+
+  .role-info {
+    padding: 1rem 1.2rem 1.2rem;
+    flex: 1;
+  }
+
   .role-title {
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: .25rem;
+    color: #111;
+    margin-bottom: .35rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .role-option.active .role-title {
+    color: #e30613;
+  }
+
+  .role-check {
+    display: none;
+    width: 18px;
+    height: 18px;
+    background: #e30613;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .role-option.active .role-check {
+    display: inline-flex;
+  }
+
+  .role-check::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translate(-1px, -1px);
+    display: block;
   }
 
   @media (max-width: 767.98px) {
     .welcome-head,
     .welcome-body {
-      padding: 1.2rem;
+      padding: 1.4rem;
     }
 
     .role-grid {
       grid-template-columns: 1fr;
     }
+
+    .role-illus img {
+      height: 110px;
+    }
   }
 </style>
 {% endblock %}
+{% load static %}
 {% block auth_content %}
 <div class="card welcome-card">
   <div class="welcome-head">
-    <h1 class="h3 mb-1">Добро пожаловать в SynergyEdu</h1>
-    <p class="mb-0 opacity-75">Учебный портал Техникума</p>
+    <h1 class="h3 fw-bold mb-1">Добро пожаловать в SynergyEdu</h1>
+    <p class="mb-0 opacity-75 fs-6">Учебный портал Техникума</p>
   </div>
   <div class="welcome-body">
-    <div class="mb-3">
-      <div class="small text-uppercase text-muted fw-semibold mb-2">Выбор роли</div>
+    <div class="mb-4">
+      <div class="small text-uppercase text-muted fw-semibold mb-3 ls-1">Выберите роль</div>
       <div class="role-grid" id="roleGrid">
+
         <label class="role-option active" data-role="student" for="role-student">
           <input type="radio" name="role" id="role-student" value="student" checked>
-          <div class="role-title">Студент</div>
-          <div class="text-muted small">Самостоятельная регистрация с выбором учебной группы.</div>
+          <div class="role-illus">
+            <img src="{% static 'img/student_reg.svg' %}" alt="Студент">
+          </div>
+          <div class="role-info">
+            <div class="role-title">
+              Студент
+              <span class="role-check"></span>
+            </div>
+            <div class="text-muted small lh-sm">Самостоятельная регистрация с выбором учебной группы.</div>
+          </div>
         </label>
+
         <label class="role-option" data-role="teacher" for="role-teacher">
           <input type="radio" name="role" id="role-teacher" value="teacher">
-          <div class="role-title">Преподаватель</div>
-          <div class="text-muted small">Отправка заявки на регистрацию для подтверждения администратором.</div>
+          <div class="role-illus">
+            <img src="{% static 'img/teacher_reg.svg' %}" alt="Преподаватель">
+          </div>
+          <div class="role-info">
+            <div class="role-title">
+              Преподаватель
+              <span class="role-check"></span>
+            </div>
+            <div class="text-muted small lh-sm">Заявка на регистрацию с подтверждением администратором.</div>
+          </div>
         </label>
+
       </div>
     </div>
 
     <div class="d-grid d-sm-flex gap-2">
-      <a id="registerButton" href="{% url 'register_student' %}" class="btn btn-primary btn-lg px-4">Зарегистрироваться</a>
-      <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg px-4">Войти</a>
+      <a id="registerButton" href="{% url 'register_student' %}" class="btn btn-primary btn-lg px-5">Зарегистрироваться</a>
+      <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg px-5">Войти</a>
     </div>
 
     <p class="text-muted small mb-0 mt-3">Если аккаунт уже есть, используйте вход.</p>

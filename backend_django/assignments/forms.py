@@ -40,8 +40,11 @@ class AssignmentTeacherForm(forms.ModelForm):
         self.teacher = teacher
         course_qs = Course.objects.none()
         if teacher is not None:
-            course_qs = Course.objects.filter(teacher=teacher).order_by("title")
+            course_qs = Course.objects.filter(teacher=teacher).select_related("group").order_by("title")
         self.fields["course"].queryset = course_qs
+        self.fields["course"].label_from_instance = lambda obj: (
+            f"{obj.title} ({obj.group.name})" if obj.group else obj.title
+        )
 
         self.fields["title"].widget.attrs.setdefault("class", "form-control")
         self.fields["description"].widget.attrs.setdefault("class", "form-control")
